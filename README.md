@@ -1,10 +1,9 @@
-rosis
-=====
+# rosis
 
 ROSIS (ROS2 Integration Services) is an implementation that uses SOSS to connect ROS2 to different systems, allowing also connection through TCP.
 
-Setup
-=====
+## Setup
+
 This repository has a workspace already distributed in order to make easy starting a connection between ROS2 and any other system.
 
 If the repository is downloaded with the recursive option (git clone --recursive https://gitlab.intranet.eprosima.com/eProsima/soss/rosis), the initial layout will include a folder with a workspace, wich contains a src (source) directory. Inside that last folder, the SOSS project and the ROS2 system handle will be downloaded and ready to build.
@@ -21,8 +20,8 @@ This will clone the system handles into the folder workspace/src/plugins.
 
 With that done, the workspace is ready to be built and used.
 
-Usage
-=====
+## Usage
+
 0. Source a colcon environment in which ROS2 has been built (soss-ros2 uses rclcpp package).
 1. cd the workspace folder
 1. Build the necessary packages with colcon (e.g. for a ros2-fiware connection: colcon build --packages-up-to soss-ros2 soss-fiware)
@@ -31,8 +30,8 @@ Usage
 1. Run an instance of SOSS with the configuration file (e.g. soss src/plugins/fiware/fiware/sample/hello_fiware_ros2.yaml)
 1. Start sending messages. The two systems will communicate through soss now.
 
-Use cases
-=========
+## Use cases
+
 
 This implementation covers some use cases thanks to its multiple system handles, besides the case of connecting ROS2 with other systems.
 
@@ -59,8 +58,7 @@ topics:
 Notice that SOSS also includes a functionality to remap topic names, as seen in its documentation.
 Initializing a SOSS instance with this YAML file will mirror the ambient noise topic from one room to the other, while leaving the rest of the topics independent even if they have the same topic name and data type.
 
-Project layout
-==============
+## Project layout
 
 This repository contains the following files and directories:
 
