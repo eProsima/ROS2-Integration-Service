@@ -6,7 +6,7 @@ With the DDS system handle, ROS2 adquires the capability of connecting to other 
 
 Another use case for SOSS is domain changing. ROS2 allows to configure different domains in the same network, to give users the possibility of creating separate environments that won’t interfere with each other. A ROS2 node in a certain domain won’t be able to communicate with a node in other domain, even if they are a pair of publisher-subscriber in the same topic in the same LAN. This can be quite useful, but in some cases a user may want to communicate two different domains through a node, to allow only a certain amount of communication between them.
 
-![](docs/images/domain_diagram.png)
+![](images/domain_diagram.png)
 
 Domain change in SOSS is done using two ROS2 system handles, and is as easy to use as specifying a different domain for each of them. To specify the domain, the system map in the YAML configuration file must have a key-value pair for the domain such as the one seen in the following file:
 
