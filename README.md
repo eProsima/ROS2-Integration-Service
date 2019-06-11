@@ -40,6 +40,10 @@ soss src/plugins/soss-fiware/fiware/sample/hello_fiware_ros2.yaml
 ```
 Now, fiware an ROS2 can exchange messages of the type specified in the configuration file.
 
+## More information
+
+If you are a developer and you want to connect ROS2 to other systems, you may want to check our manual on [how to create a system handle](docs/CreatingSH.md)
+
 ---
 
 <!-- 
