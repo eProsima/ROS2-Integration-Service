@@ -1,9 +1,9 @@
 repositories:
-  workspace/src/plugins/dds:
+  workspace/src/plugins/soss-dds:
     type: git
-    url: git@gitlab.intranet.eprosima.com:eProsima/soss/soss-dds.git
+    url: git@github.com:eProsima/SOSS-DDS.git
     version: master
-  workspace/src/plugins/fiware:
+  workspace/src/plugins/soss-fiware:
     type: git
-    url: git@gitlab.intranet.eprosima.com:eProsima/soss/soss-fiware.git
+    url: git@github.com:eProsima/SOSS-FIWARE.git
     version: master
