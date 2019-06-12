@@ -1,12 +1,12 @@
 # rosis
 
-ROSIS (ROS2 Integration Services) is an implementation that uses SOSS to connect ROS2 to different systems.
+ROSIS (ROS2 Integration Services) is an implementation that uses [SOSS][soss] to connect ROS2 to different systems.
 
 ## Setup
 
 This repository has a workspace already organized in order to make easy starting a connection between ROS2 and any other system.
 
-It should be downloaded with the recursive option, in order to download soss as a third party. That way, the initial layout will include a folder with a workspace, which contains a `src` (source) directory, and inside that last folder, the SOSS project and the ROS2 system handle will be downloaded and ready to build.
+It should be downloaded with the recursive option, in order to download SOSS as a third party. That way, the initial layout will include a folder with a workspace, which contains a `src` (source) directory, and inside that last folder, the SOSS project and the ROS2 system handle will be downloaded and ready to build.
 
 ```
 git clone git@github.com:eProsima/ROSIS.git --recursive 
@@ -38,7 +38,7 @@ colcon build --packages-up-to soss-ros2 soss-fiware
 source install/local_setup.bash
 soss src/plugins/soss-fiware/fiware/sample/hello_fiware_ros2.yaml
 ```
-Now, fiware an ROS2 can exchange messages of the type specified in the configuration file.
+Now, fiware and ROS2 can exchange messages of the type specified in the configuration file.
 
 ## More information
 
@@ -65,5 +65,5 @@ More information: <a href="http://rosin-project.eu">rosin-project.eu</a>
 This project has received funding from the European Union’s Horizon 2020  
 research and innovation programme under grant agreement no. 732287. 
 
- [soss]: https://github.com/osrf/soss
+ [soss]: https://github.com/osrf/soss_v2
  [fiware]: https://www.fiware.org/

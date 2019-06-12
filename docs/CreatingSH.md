@@ -10,7 +10,7 @@ The workflow of the configuration part can be seen in the following UML:
 
 ![](http://www.plantuml.com/plantuml/png/ZP9lQzim4CRVwrE838O3xHSeOxGhsHnewB3ofX0midInnMJ9qvzr-VQLvDR4LaFhDxAUU-vtkfDkhQF6-LwYJd30HwrTe_yZH9dJ1diB1eKzNjq_LfiL_l8Wsixza1uG3jyGKWKJ0rKERrKWAPO7Lc-HWogfuX9McDh9dgGywLwhesYzeKvebKKhQ8LrOF9Qv1JqVeGUL0UKfsgaB3Cl0MfOXq1n73j-1pCxC2aHYkF0rz-dm-CRunL2qtOMafhocgK-wgEGaFkc_fUW92RRR0xu1ZC3r06QoxalDce1Fztj7Zu1JIVj1G_XPsh0efm_3YjuRVef5ErXZKOrnSit3fS8XLtIeaWU2QchpQyjsM-gcZo5PLSS5FxWImKYAQAc2myyeImO5mZdL_qpFTVJEZlvBBK5L_JFzOYUz7S6SexUggFEiMF3x5M5eeA_NXZW-zC0zYjsSRbAytyrhJzpknElTdeGp5ueUyV_WN72Gf5igQ4ht8Erj8KwrbulChzTZvdxwF_j6obi1-O2dlZ6CYEQY_YmOrJAXh8_-SJpfytE3H_RbyFVqI4VNPQ5NMTWyOnlGN7VonS0)
 
-In the configuration, the core reads the configuration file and thus knows in which system handles it has to create publishers, subscribers, clients and servers. Clients and servers are not needed in FIWARE because of its way of managing communications, so the implementation of this type of communications will not be discussed in this manual.
+In the configuration, the core reads the configuration file and thus knows in which system handles it has to create publishers, subscribers, clients and servers.
 
 After loading the dynamic libraries for the system handles that will be used, the core will first ask each system handle to advertise to a certain topic with a specific message type. This means that the system handle will have to hand back to the core an instance of its implementation for the class TopicPublisher, which contains the callback function that will be used to publish messages into the external system. That callback must be able to convert the message coming from the core as a generic soss message into a message that its external system understands. 
 
@@ -22,14 +22,14 @@ After the configuration, the core threads each system handle, calling its “spi
 
 # Developing a new system handle
 
-When developing a new system handle, a class must be implemented with some specific functions. The number of functions needed vary with the type of system implemented, for example, as mentioned above, FIWARE system handle will not need to use the server/client part of soss, so it will only have the functions to publish and advertise, among some common functions that must always be implemented.
+When developing a new system handle, a class must be implemented with some specific functions. The number of functions needed vary with the type of system implemented, for example [FIWARE system handle][FW_SH] will not need to use the server/client part of soss, so it will only have the functions to publish and advertise, among some common functions that must always be implemented. In that case, just a class inheriting from `soss::TopicSystem` will hold all the functions and classes needed.
 
-A class inheriting from `soss::TopicSystem` will hold the functions and classes needed.
+The first function to be implemented is `configure`, which receives from the core a list with the names of the required types that will be used in each run. The system handle can use that list to load the libraries needed to convert between soss messages and system messages, if it is necessary.
 
-The first function to be implemented is `configure`, which receives from the core a list with the names of the required types that will be used in each run. The system handle can use that list to load the libraries needed to convert between soss messages and system messages, although that part isn’t needed for the FIWARE system handle, that just needs to have a generic function to put the content of the soss messages in a JSON and vice versa.
-
-There is also a function called `okay` with which the core must be able to check if the system handle is still running properly. Another function, called `spin_once`, will have the purpose of managing the communications with the external system. In FIWARE it is not needed, but for example in ROS2 that function calls an analogue function in ROS2 to make it check if there is any new message. This function will be called repeatedly from the soss core.
+There is also a function called `okay` with which the core must be able to check if the system handle is still running properly. Another function, called `spin_once`, will have the purpose of managing the communications with the external system. For example, in ROS2 system handle, that function calls an analogue function in ROS2 to make it check if there is any new message. This function will be called repeatedly from the soss core.
 
 The function advertise will receive a topic name and a message type, and it will have to retrieve a class called `TopicPublisher`, that must also be implemented, and that will have a function called `publish`, which will receive a soss message and transform it to a type of message that the involved system can understand, sending it to the system.
 
 Last, there must be a function `subscribe` that will receive the topic name and type to which it has to subscribe, and a callback function, which will be one of the `publish` functions handled to the core from another system handle. That `subscribe` function must first create a subscription in its system and then store the callback in a way that it will be invoked each time a new message arrives to the corresponding topic, converting it to a soss message first.
+
+ [FW_SH]: https://github.com/eProsima/SOSS-FIWARE
