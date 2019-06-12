@@ -67,7 +67,7 @@ and that will have a function called `publish`, which will receive a soss messag
 - `subscribe` will receive the topic name and type to which it has to subscribe, and a callback function, which will be one of the `publish` functions handled to the core from another system handle. 
 That `subscribe` function must first create a subscription in its system and then store the callback in a way that it will be invoked each time a new message arrives to the corresponding topic, converting it to a soss message first.
 
-The following class diagram may help to understand this:
+The following class diagram may help to understand this concepts:
 
 ![](http://www.plantuml.com/plantuml/png/VPBDQiCm48JlUWeVKqfUeGGAfPT28BqRMTwcecj9x4gcfksxzqUnYkLrSilEp7xio0UEcc8QK2c3chavJHnXUDIkHsW-LFFpkssCTo_sd0XsDvU9VzDJ-SF1kjOxyoj_pOkUVR3cb3esP3kWlBTiv5bOHOwfGyklGCKRycJt1Cpw39k12g7x4IXQNYEoiLmCD5e3zsZ1nP8cC617Q0auU9UNY8cAQWXqXDRyQMqW_pu9qIFvqVP0_p6Ds78Mh_X5s9pRfENKPVQG4ES2v3VQfx3_l5jy2KfgUjkur4MAP9GWIYXR14jDoSxPkhG87DaeWfGglLPtPtcbLc-pNN1TYzfifBhXIYEh8sglk4yTmFLfm6y0)
 
