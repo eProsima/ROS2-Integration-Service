@@ -41,7 +41,7 @@ RUN . /opt/ros/crystal/setup.sh && \
 WORKDIR /root
 RUN rm -rf soss_wp
 RUN mkdir -p workspace/src
-WORKDIR /root/workspace
+WORKDIR /root/workspace/src
 
 # Plugin: dds
 RUN git clone https://github.com/eProsima/SOSS-DDS.git dds
@@ -50,6 +50,8 @@ RUN git clone https://github.com/eProsima/SOSS-DDS.git dds
 RUN apt-get install -y libasio-dev
 RUN apt-get install -y libcurlpp-dev
 RUN git clone https://github.com/eProsima/SOSS-FIWARE.git fiware
+
+WORKDIR /root/workspace
 
 ENTRYPOINT . /opt/soss/setup.sh && \
     echo "[NOTE]: This docker comes with several plugins. To use it, follow the next steps: " && \
