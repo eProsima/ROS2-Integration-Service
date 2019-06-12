@@ -23,32 +23,37 @@ RUN apt-get install -y ros-crystal-test-msgs
 RUN chmod +x ./opt/ros/crystal/setup.sh
 
 # Prepare soss
-RUN mkdir -p root/soss_wp/src/osrf
-COPY ./src root/soss_wp/src/osrf #TODO: Download from git
-WORKDIR root/soss_wp
-
+RUN apt-get install -y git #Required for config
+RUN mkdir -p root/soss_wp/src
+WORKDIR /root/soss_wp/src
+RUN git clone https://github.com/osrf/soss_v2.git
+WORKDIR /root/soss_wp
 
 # Compile soss
 RUN . /opt/ros/crystal/setup.sh && \
     colcon build --packages-up-to soss-ros2-test --cmake-args -DCMAKE_BUILD_TYPE=RELEASE --install-base /opt/soss
 
+# Check compilation
+RUN . /opt/ros/crystal/setup.sh && \
+    colcon test --packages-up-to soss-ros2-test --install-base /opt/soss
+
 # Prepare environment
 WORKDIR /root
 RUN rm -rf soss_wp
-RUN mkdir -p my_wp/src
-WORKDIR /root/my_wp
+RUN mkdir -p workspace/src
+WORKDIR /root/workspace
 
 # Plugin: dds
-COPY ./src/dds src/dds #TODO: Download from git
+RUN git clone https://github.com/eProsima/SOSS-DDS.git dds
 
 # Plugin: fiware
 RUN apt-get install -y libasio-dev
 RUN apt-get install -y libcurlpp-dev
-COPY ./src/fiware src/fiware #TODO: Download from git
+RUN git clone https://github.com/eProsima/SOSS-FIWARE.git fiware
 
 ENTRYPOINT . /opt/soss/setup.sh && \
     echo "[NOTE]: This docker comes with several plugins. To use it, follow the next steps: " && \
-    echo "[STEP] 1: Compile the plugins you want with: 'colcon build --packages-up-to <your_plugins...>'" && \
+    echo "[STEP] 1: Compile the plugins you want with: 'colcon build --packages-up-to <your_plugin>...'" && \
     echo "[STEP] 2: Source 'rosis' project: '. install/local_setup.bash'" && \
-    echo "[STEP] 3: Run the test: 'rosis <your_config.yaml>'" && \
+    echo "[STEP] 3: Now, you can test it running an example: 'soss <your_config.yaml>'" && \
     bash
