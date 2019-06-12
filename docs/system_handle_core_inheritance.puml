@@ -1,0 +1,61 @@
+@startuml
+
+class SystemHandle {
+    + configure()
+    + okay()
+    + spin_once()
+}
+
+class TopicSubscriberSystem {
+    + subscribe()
+}
+
+class TopicPublisher {
+    + publish(Message)
+}
+
+class TopicPublisherSystem {
+    + advertise()
+}
+
+class TopicSystem
+
+class ServiceClient {
+    + receive_response()
+}
+
+class ServiceClientSystem {
+    + create_client_proxy()
+}
+
+class ServiceProvider {
+    + call_service()
+}
+
+class ServiceProviderSystem {
+    + create_service_proxy()
+}
+
+class ServiceSystem
+class FullSystem
+
+TopicSubscriberSystem -up-|> SystemHandle
+TopicPublisherSystem -up-|> SystemHandle
+TopicSystem -up-|> TopicSubscriberSystem
+TopicSystem -up-|> TopicPublisherSystem
+ServiceClientSystem -up-|> SystemHandle
+ServiceProviderSystem -up-|> SystemHandle
+
+ServiceSystem -up-|> ServiceClientSystem
+ServiceSystem -up-|> ServiceProviderSystem
+
+FullSystem -up-|> TopicSystem
+FullSystem -up-|> ServiceSystem
+
+TopicPublisherSystem -up-> TopicPublisher
+
+ServiceClientSystem -up-> ServiceClient
+ServiceProviderSystem -up-> ServiceProvider
+ServiceProvider -up-> ServiceClient
+
+@enduml
