@@ -1,10 +1,12 @@
 # SOSS system handles
 
-In SOSS, system handles are interfaces that communicate with each other and with the system for which they have been developed. This, among some set of predetermined procedures specified in SOSS, makes possible to communicate different systems without each system knowing any other, just with a common interface.
+In SOSS, system handles are interfaces that communicate with each other and with the system for which they have been developed. 
+This, among some set of predetermined procedures specified in SOSS, makes possible to communicate different systems without each system knowing any other, just with a common interface.
 
 In order to add a new system to the soss architecture, a system handle must be created to manage the commands coming from other system handles and from the core, and also to communicate with the new system.
 
-System handles communicate with each other by callback functions. These callback functions are given to the system handles by the soss core, whose main function is to read the configuration from a YAML file and configure every system handle with its callbacks.
+System handles communicate with each other by callback functions. 
+These callback functions are given to the system handles by the soss core, whose main function is to read the configuration from a YAML file and configure every system handle with its callbacks.
 
 The workflow of the configuration part can be seen in the following UML:
 
@@ -12,24 +14,38 @@ The workflow of the configuration part can be seen in the following UML:
 
 In the configuration, the core reads the configuration file and thus knows in which system handles it has to create publishers, subscribers, clients and servers.
 
-After loading the dynamic libraries for the system handles that will be used, the core will first ask each system handle to advertise to a certain topic with a specific message type. This means that the system handle will have to hand back to the core an instance of its implementation for the class TopicPublisher, which contains the callback function that will be used to publish messages into the external system. That callback must be able to convert the message coming from the core as a generic soss message into a message that its external system understands. 
+After loading the dynamic libraries for the system handles that will be used, the core will first ask each system handle to advertise to a certain topic with a specific message type. 
+This means that the system handle will have to hand back to the core an instance of its implementation for the class TopicPublisher, which contains the callback function that will be used to publish messages into the external system. 
+That callback must be able to convert the message coming from the core as a generic soss message into a message that its external system understands. 
 
-When finished with the advertise calls, the core will have a set of callbacks to publish messages to each system. Then it will give each of these callbacks to the system handles that will be using them, with a function that must be implemented inside the system handle, called `subscribe`, that will receive the topic name and type of message, together with the callback that it will have to use each time a new message arrives to the specified topic in order to send it to the correspondent system handle(s). Then that system handle must be able to subscribe to that topic in its system, and whenever a new message arrives to the topic, transform it to a soss message and send it to the correspondent systems through the callbacks.
+When finished with the advertise calls, the core will have a set of callbacks to publish messages to each system. 
+Then it will give each of these callbacks to the system handles that will be using them, with a function that must be implemented inside the system handle, called `subscribe`, 
+that will receive the topic name and type of message, together with the callback that it will have to use each time a new message arrives to the specified topic in order to send it to the correspondent system handle(s). 
+Then that system handle must be able to subscribe to that topic in its system, and whenever a new message arrives to the topic, transform it to a soss message and send it to the correspondent systems through the callbacks.
 
-After the configuration, the core threads each system handle, calling its “spin_once” function repeatedly. The communication between different systems is thus managed as follows:
+After the configuration, the core threads each system handle, calling its “spin_once” function repeatedly. 
+The communication between different systems is thus managed as follows:
 
 ![](http://www.plantuml.com/plantuml/png/VOyn2uCm48Nt_8h3oGuEPYobStVNWbpFO88n2IP5-kzxY1A7u9XtttiV4G6NPCW4T0cgxXUJcjzEenkiWhO2ZD2zsajAxfGiKST6SUAeIY76nNy3hDhme9_gcs0hD4ykmXr8Avhwv0EP2BKFoNY7bfaDOP8PfzP-ZcFauYcD2XVIFQ6r7wJfT9LyPPu3kGN7EmTNOfb7JkASbiMF9elp1_UtSiCV)
 
 # Developing a new system handle
 
-When developing a new system handle, a class must be implemented with some specific functions. The number of functions needed vary with the type of system implemented, for example [FIWARE system handle][FW_SH] will not need to use the server/client part of soss, so it will only have the functions to publish and advertise, among some common functions that must always be implemented. In that case, just a class inheriting from `soss::TopicSystem` will hold all the functions and classes needed.
+When developing a new system handle, a class must be implemented with some specific functions. 
+The number of functions needed vary with the type of system implemented, for example [FIWARE system handle][FW_SH] will not need to use the server/client part of soss, so it will only have the functions to publish and advertise, among some common functions that must always be implemented. 
+In that case, just a class inheriting from `soss::TopicSystem` will hold all the functions and classes needed.
 
-The first function to be implemented is `configure`, which receives from the core a list with the names of the required types that will be used in each run. The system handle can use that list to load the libraries needed to convert between soss messages and system messages, if it is necessary.
+The first function to be implemented is `configure`, which receives from the core a list with the names of the required types that will be used in each run. 
+The system handle can use that list to load the libraries needed to convert between soss messages and system messages, if it is necessary.
 
-There is also a function called `okay` with which the core must be able to check if the system handle is still running properly. Another function, called `spin_once`, will have the purpose of managing the communications with the external system. For example, in ROS2 system handle, that function calls an analogue function in ROS2 to make it check if there is any new message. This function will be called repeatedly from the soss core.
+There is also a function called `okay` with which the core must be able to check if the system handle is still running properly. 
+Another function, called `spin_once`, will have the purpose of managing the communications with the external system. 
+For example, in ROS2 system handle, that function calls an analogue function in ROS2 to make it check if there is any new message. 
+This function will be called repeatedly from the soss core.
 
-The function advertise will receive a topic name and a message type, and it will have to retrieve a class called `TopicPublisher`, that must also be implemented, and that will have a function called `publish`, which will receive a soss message and transform it to a type of message that the involved system can understand, sending it to the system.
+The function advertise will receive a topic name and a message type, and it will have to retrieve a class called `TopicPublisher`, that must also be implemented, 
+and that will have a function called `publish`, which will receive a soss message and transform it to a type of message that the involved system can understand, sending it to the system.
 
-Last, there must be a function `subscribe` that will receive the topic name and type to which it has to subscribe, and a callback function, which will be one of the `publish` functions handled to the core from another system handle. That `subscribe` function must first create a subscription in its system and then store the callback in a way that it will be invoked each time a new message arrives to the corresponding topic, converting it to a soss message first.
+Last, there must be a function `subscribe` that will receive the topic name and type to which it has to subscribe, and a callback function, which will be one of the `publish` functions handled to the core from another system handle. 
+That `subscribe` function must first create a subscription in its system and then store the callback in a way that it will be invoked each time a new message arrives to the corresponding topic, converting it to a soss message first.
 
  [FW_SH]: https://github.com/eProsima/SOSS-FIWARE
