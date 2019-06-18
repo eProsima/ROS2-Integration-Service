@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 
     for (const YAML::detail::iterator_value& plugin: rosis_config["plugins"])
     {
-        soss_config["systems"][plugin.first]["type"] = plugin.second["type"];
+        soss_config["systems"][plugin.first] = plugin.second;
     }
 
     for (const YAML::detail::iterator_value& comm: rosis_config["topics"])
