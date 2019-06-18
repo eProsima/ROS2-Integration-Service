@@ -1,0 +1,8 @@
+plugins:
+    fiware: { type: fiware, host: "192.168.1.59", port: 1026}
+
+topics:
+    from_ros2:
+        - { topic: hello_fiware, type: "std_msgs/String" }
+    to_ros2:
+        - { topic: hello_ros2, type: "std_msgs/String" }
