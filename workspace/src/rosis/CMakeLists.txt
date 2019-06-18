@@ -8,9 +8,11 @@ find_package(soss-core REQUIRED)
 # We must to create the dependency.
 find_package(soss-ros2 REQUIRED)
 
+###############################
+# Build rosis
 set(SRC src/main.cpp)
 
-add_executable(${PROJECT_NAME} SHARED ${SRC})
+add_executable(${PROJECT_NAME} ${SRC})
 
 set_target_properties(${PROJECT_NAME}
     PROPERTIES
@@ -25,4 +27,13 @@ target_compile_options(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         soss::core
+)
+
+
+###############################
+# Install rosis
+install(
+  TARGETS rosis
+  DESTINATION "${CMAKE_INSTALL_BINDIR}"
+  COMPONENT rosis
 )
