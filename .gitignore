@@ -2,4 +2,3 @@ workspace/build
 workspace/install
 workspace/log
 workspace/src/plugins
-.color_coded

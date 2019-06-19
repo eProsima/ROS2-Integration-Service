@@ -47,8 +47,5 @@ int main(int argc, char* argv[])
         soss_config["topics"][comm.first]["route"] = route;
     }
 
-    //std::cout << "\n===== SOSS CONFIG =====" << std::endl;
-    //std::cout << soss_config << std::endl;
-
     return soss::run_instance(soss_config).wait();
 }
