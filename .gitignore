@@ -3,4 +3,3 @@ workspace/install
 workspace/log
 workspace/src/plugins
 .color_coded
-.ycm_extra_conf.py
