@@ -9,34 +9,34 @@ This repository has a workspace already organized in order to make easy starting
 It should be downloaded with the recursive option, in order to download SOSS as a third party. That way, the initial layout will include a folder with a workspace, which contains a `src` (source) directory, and inside that last folder, the SOSS project and the ROS2 system handle will be downloaded and ready to build.
 
 ```
-git clone git@github.com:eProsima/ROSIS.git --recursive 
+$ git clone git@github.com:eProsima/ROSIS.git --recursive
 ```
 
 If the user wants to connect with other systems, the system handle for each system to be connected must be downloaded separately. To make things easier, this repository includes in its root directory a file called rosis.repos, to be used together with [vcstool](https://github.com/dirk-thomas/vcstool) to clone eProsima's system handles. In the root directory, execute the following command:
 
 ```
-vcs import < rosis.repos
+$ vcs import < rosis.repos
 ```
 
 This will clone the system handles into the folder workspace/src/plugins.
 
 ## Usage
 
-0. If you are using soss-ros2 system handle, source a colcon environment in which ROS2 has been built (soss-ros2 uses rclcpp package).
+0. Source the colcon environment in which ROS2 has been built (*rosis* uses rclcpp package).
 1. Change directories to the workspace folder `$ cd workspace`
-1. Build the necessary packages with colcon `$ colcon build --packages-up-to <system_handle_pkg_names>`
+1. Build the necessary packages with colcon `$ colcon build --packages-up-to rosis <system_handle_pkg_names>`
 1. Source the current workspace `$ source install/local_setup.bash`
-1. Run an instance of SOSS with the configuration file `$ soss path/to/config_file.yaml`
+1. Run an instance of ROSIS with the configuration file `$ rosis path/to/config_file.yaml`
 
-The two systems will communicate through soss now.
+The two systems will communicate through *rosis* now.
 
 ## Example - Connecting ROS2 with FIWARE
 
 In the workspace directory, having previously sourced a colcon ws with ROS2:
 ```
-colcon build --packages-up-to soss-ros2 soss-fiware
-source install/local_setup.bash
-soss src/plugins/soss-fiware/fiware/sample/hello_fiware_ros2.yaml
+$ colcon build --packages-up-to rosis soss-fiware
+$ source install/local_setup.bash
+$ rosis ../samples/fiware.yaml
 ```
 Now, fiware and ROS2 can exchange messages of the type specified in the configuration file.
 
@@ -46,24 +46,24 @@ If you are a developer and you want to connect ROS2 to other systems, you may wa
 
 ---
 
-<!-- 
+<!--
     ROSIN acknowledgement from the ROSIN press kit
     @ https://github.com/rosin-project/press_kit
 -->
 
 <a href="http://rosin-project.eu">
-  <img src="http://rosin-project.eu/wp-content/uploads/rosin_ack_logo_wide.png" 
+  <img src="http://rosin-project.eu/wp-content/uploads/rosin_ack_logo_wide.png"
        alt="rosin_logo" height="60" >
 </a>
 
-Supported by ROSIN - ROS-Industrial Quality-Assured Robot Software Components.  
+Supported by ROSIN - ROS-Industrial Quality-Assured Robot Software Components.
 More information: <a href="http://rosin-project.eu">rosin-project.eu</a>
 
-<img src="http://rosin-project.eu/wp-content/uploads/rosin_eu_flag.jpg" 
-     alt="eu_flag" height="45" align="left" >  
+<img src="http://rosin-project.eu/wp-content/uploads/rosin_eu_flag.jpg"
+     alt="eu_flag" height="45" align="left" >
 
-This project has received funding from the European Union’s Horizon 2020  
-research and innovation programme under grant agreement no. 732287. 
+This project has received funding from the European Union’s Horizon 2020
+research and innovation programme under grant agreement no. 732287.
 
  [soss]: https://github.com/osrf/soss_v2
  [fiware]: https://www.fiware.org/
