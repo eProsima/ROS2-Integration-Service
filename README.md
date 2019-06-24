@@ -1,48 +1,80 @@
-# rosis
-
+# ROSIS
 ROSIS (ROS2 Integration Services) is an implementation that uses [SOSS][soss] to connect ROS2 to different systems.
 
 ## Setup
+ROSIS uses a *colcon* to work.
+As dependencies, it needs a [SOSS][soss] environment with the `soss-ros2 and soss-mock` packages into it to work.
 
-This repository has a workspace already organized in order to make easy starting a connection between ROS2 and any other system.
-
-It should be downloaded with the recursive option, in order to download SOSS as a third party. That way, the initial layout will include a folder with a workspace, which contains a `src` (source) directory, and inside that last folder, the SOSS project and the ROS2 system handle will be downloaded and ready to build.
-
-```
-$ git clone git@github.com:eProsima/ROSIS.git --recursive
-```
-
-If the user wants to connect with other systems, the system handle for each system to be connected must be downloaded separately. To make things easier, this repository includes in its root directory a file called rosis.repos, to be used together with [vcstool](https://github.com/dirk-thomas/vcstool) to clone eProsima's system handles. In the root directory, execute the following command:
+Clone this repository into [colcon workspace][colcon], and *source* the soss dependency:
 
 ```
-$ vcs import < rosis.repos
+$ cd rosis_workspace
+$ git clone git@github.com:eProsima/ROS2-Integration-Service.git src/rosis
+$ source path/to/soss/setup.bash
+$ colcon build
 ```
 
-This will clone the system handles into the folder workspace/src/plugins.
+## Plugins packages
+ROSIS can connect ROS2 to any system that has a soss-plugin implemented.
+The official list of supported systems can be found at: [SOSS][soss].
+
+If you are a developer and you want to connect ROS2 to other systems,
+you may want to check our manual on [how to create a system handle](docs/CreatingSH.md)
 
 ## Usage
+* Into your colcon workspace, source the *colcon environment* in which ROSIS has been built (see [Setup](# Setup)):
+  ```
+  $ source path/to/rosis/setup.bash
+  ```
 
-0. Source the colcon environment in which ROS2 has been built (*rosis* uses rclcpp package).
-1. Change directories to the workspace folder `$ cd workspace`
-1. Build the necessary packages with colcon `$ colcon build --packages-up-to rosis <system_handle_pkg_names>`
-1. Source the current workspace `$ source install/local_setup.bash`
-1. Run an instance of ROSIS with the configuration file `$ rosis path/to/config_file.yaml`
+* Put into your workspace the plugins that you want to use, and build them:
+  ```
+  $ colcon build --packages-up-to <plugin>...
+  ```
 
-The two systems will communicate through *rosis* now.
+* Source your own environment in order to allow rosis to find the plugins
+  ```
+  $ source install/local_setup.bash`
+  ```
 
-## Example - Connecting ROS2 with FIWARE
+* Run an instance of ROSIS with a [ROSIS configuration YAML file](#ROSIS configuration YAML file)
+  ```
+  $ rosis path/to/config_file.yaml`
+  ```
 
-In the workspace directory, having previously sourced a colcon ws with ROS2:
+The systems will be able to communicate through *rosis* now.
+
+## ROSIS configuration YAML file
 ```
-$ colcon build --packages-up-to rosis soss-fiware
-$ source install/local_setup.bash
-$ rosis ../samples/fiware.yaml
+plugins:
+    my_system_id: { type: my_system}
+
+topics:
+    hello_ros2: {type: "std_msgs/String", from: my_system_id}
+    hello_my_system: {type: "std_msgs/String", to: my_system_id}
 ```
-Now, fiware and ROS2 can exchange messages of the type specified in the configuration file.
 
-## More information
+*Note: this configuration files are a simplified version of soss configuration files with ROS2 as fixed communication side.*
 
-If you are a developer and you want to connect ROS2 to other systems, you may want to check our manual on [how to create a system handle](docs/CreatingSH.md)
+The configuration file has two diferenciate parts, `plugins` and `topics`.
+The `plugins` part allow to initialize the systems who want to communicate with ROS2.
+The `topics` part enable a topic communication through a route.
+In the example case, `hello_ros2` topic will be able to arrive to ROS2 if `my_system_id` sends this kind of topic.
+From the opposite way, when ROS2 sends a `hello_my_system` topic, `my_system_id` will be able to receive it.
+
+The following YAML file is a more complex example allowing three systems (`s1`, `s2` and `s3`) communicate to ROS2:
+```
+plugins:
+    s1: { type: a}
+    s2: { type: a}
+    s3: { type: b}
+
+topics:
+    hello_ros2: {type: "std_msgs/String", from: [s1, s2]}
+    hello_ros2_from_s3: {type: "std_msgs/String", from: s3}
+    hello_whatever: {type: "std_msgs/String", to: [s1, s2]}
+    hello_whatever_to_s3: {type: "std_msgs/String", to: s3}
+```
 
 ---
 
@@ -65,5 +97,7 @@ More information: <a href="http://rosin-project.eu">rosin-project.eu</a>
 This project has received funding from the European Union’s Horizon 2020
 research and innovation programme under grant agreement no. 732287.
 
- [soss]: https://github.com/osrf/soss_v2
- [fiware]: https://www.fiware.org/
+[colcon]: https://index.ros.org/doc/ros2/Tutorials/Colcon-Tutorial/#create-a-workspace
+[ros2]: https://index.ros.org/doc/ros2
+[soss]: https://github.com/osrf/soss_v2
+[fiware]: https://www.fiware.org/
