@@ -22,7 +22,7 @@ If you are a developer and you want to connect ROS2 to other systems,
 you may want to check our manual on [how to create a system handle](docs/CreatingSH.md)
 
 ## Usage
-* Into your colcon workspace, source the *colcon environment* in which ROSIS has been built (see [Setup][]):
+* Into your colcon workspace, source the *colcon environment* in which ROSIS has been built (see [Setup](#setup)):
   ```
   $ source path/to/rosis/setup.bash
   ```
@@ -37,7 +37,7 @@ you may want to check our manual on [how to create a system handle](docs/Creatin
   $ source install/local_setup.bash`
   ```
 
-* Run an instance of ROSIS with a [ROSIS configuration YAML file](#ROSIS configuration YAML file)
+* Run an instance of ROSIS with a [ROSIS configuration YAML file](#rosis-configuration-yaml-file)
   ```
   $ rosis path/to/config_file.yaml`
   ```
