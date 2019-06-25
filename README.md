@@ -22,7 +22,7 @@ If you are a developer and you want to connect ROS2 to other systems,
 you may want to check our manual on [how to create a system handle](docs/CreatingSH.md)
 
 ## Usage
-* Into your colcon workspace, source the *colcon environment* in which ROSIS has been built (see [Setup](# Setup)):
+* Into your colcon workspace, source the *colcon environment* in which ROSIS has been built (see [Setup][]):
   ```
   $ source path/to/rosis/setup.bash
   ```
