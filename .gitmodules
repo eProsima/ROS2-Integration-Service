@@ -1,3 +1,0 @@
-[submodule "workspace/src/soss"]
-	path = workspace/src/soss
-	url = https://github.com/osrf/soss_v2.git
