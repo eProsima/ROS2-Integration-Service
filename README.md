@@ -5,7 +5,7 @@ ROSIS (ROS2 Integration Services) is an implementation that uses [SOSS][soss] to
 ROSIS uses *colcon* to work.
 As dependencies, it needs a [SOSS][soss] environment with the `soss-ros2` and `soss-mock` packages into it to work.
 
-Clone this repository into [colcon workspace][colcon], and *source* the soss dependency:
+Clone this repository into a [colcon workspace][colcon], and *source* the soss dependency:
 
 ```
 $ cd rosis_workspace
