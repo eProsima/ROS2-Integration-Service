@@ -1,9 +1,9 @@
-# ROSIS
-ROSIS (ROS 2 Integration Services) project has been deprecated in favor of the brand new [eProsima
-Integration Service](https://github.com/eProsima/Integration-Service), whose latest version is [v3.0.0](https://github.com/eProsima/Integration-Service/releases/tag/v3.0.0).
+# ROS 2 Integration Service (deprecated)
+ROSIS *(ROS 2 Integration Services)* project has been **deprecated** in favor of the brand new <b>[eProsima
+Integration Service](https://github.com/eProsima/Integration-Service)</b>, whose latest version can be found [here](https://github.com/eProsima/Integration-Service/releases).
 
 If you want to integrate your *ROS 2* application with another middleware and establish a communication
-bridge between the, please use *Integration Service* alongside with the [ROS 2 System Handle](https://github.com/eProsima/ROS2-SH).
+bridge between them, please use **Integration Service** along with the <b>[ROS 2 System Handle](https://github.com/eProsima/ROS2-SH)</b>.
 More details about it can be found in the [official documentation](https://integration-service.docs.eprosima.com/en/latest/user_manual/systemhandle/ros2_sh.html).
 
 <a href="http://rosin-project.eu">
